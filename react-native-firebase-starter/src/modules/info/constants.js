@@ -1,0 +1,8 @@
+export default {
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
+  ME: 'ME',
+  ALL_HOTEL: 'ALL_HOTEL',
+  ALL_ACTIVITY: 'ALL_ACTIVITY',
+  ALL_CAR: 'ALL_CAR',
+}
