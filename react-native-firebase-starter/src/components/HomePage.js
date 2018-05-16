@@ -1,82 +1,83 @@
-import {AppRegistry, ListView, Reactnative, StyleSheet, Text, ToolbarAndroid, View} from 'react-native';
+import {AppRegistry, Image, ListView, Reactnative, StyleSheet, Text, View} from 'react-native';
+import {Button, SearchBar, WhiteSpace, WingBlank} from 'antd-mobile';
 import React, {Component} from 'react';
 
-import ListItem from '../components/ListItem.js';
 import firebase from 'react-native-firebase';
 
 const styles = require('../static/css/AppStyle.js')
-const StatusBar = require('../components/StatusBar');
-const ActionButton = require('../components/ActionButton');
-
-const firebaseconfig ={
-    apiKey:"AIzaSyBQoOKQX-nD9lFzUi5Ye2vCoKzReRYf7Uc",
-    authDomain:"maptool-f99d8.firebaseapp.com",
-    databaseURL:"https://maptool-f99d8.firebaseio.com/",
-    storageBucket:"maptool-f99d8.appspot.com",
-}
-const firebaseApp = firebase.initializeApp(firebaseconfig);
 
 class HomePage extends React.Component{
-
-    constructor(props) {
-        super(props);
-        this.getref = firebaseApp.database().ref();
-        this.tasksRef = this.getref.child('users').child('-LBb_zaWeURLFjeh2j-z').child('map');
-        console.log(this.tasksRef);
-        const dataSource = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        });
-        this.state = {
-            dataSource: dataSource
-        };
-    }
-
-    listenForTasks(tasksRef) {
-        tasksRef.on('value', (dataSnapshot) => {
-            var tasks = [];
-            dataSnapshot.forEach((child) => {
-                const temp = child.val()
-                const tempKey = Object.keys(temp)
-                const tempVal = temp[tempKey[0]]
-                console.log(tempVal[0])
-                tasks.push({
-                    _key: tempKey[0], //ได้ key แล้ว
-                    numarray: tempVal
-                });
-            });
-        
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(tasks)
-            });
-        });
-    }
     
-    render() {
-        return (
-        <View style={styles.container}>
-            <ToolbarAndroid
-                style={styles.navbar}
-                title="Todo List" />
-            <ListView
-                enableEmptySections={true}
-                dataSource={this.state.dataSource}
-                renderRow={this._renderItem.bind(this)}
-                style={styles.listView}/>
-        </View>
-        );
-    }
+    state = {
+        start: '',
+        end:'',
+      };
 
-    componentDidMount() {
-        // start listening for firebase updates
-        this.listenForTasks(this.tasksRef);
-    }
+    static navigationOptions = {
+        header: null
+    };
 
-    _renderItem(task) {
-        return (
-          <ListItem task={task} />
-        );
+    onChange= (value) => {
+        console.log(value);
+        if(value == this.state.start){
+            this.setState({ this:state.start });
+        }else if(value == this.state.end){
+            this.setState({ this:state.end });
+        }else{
+            
+        }
+    };
+
+    startClear = () => {
+        console.log(start_lo.value)
+        this.setState({start_lo:''});
+    };
+
+    endClear = () => {
+        console.log(end);
+        this.setState({end:''});
+    };
+
+    handleClick = () => {
+        this.manualFocusInst.focus();
+    };
+      
+
+    render(){
+        const start_lo = this.state.start;
+        const end_lo = this.state.end;
+        const { navigate } = this.props.navigation;
+        return(
+            <View style={styles.container}>
+                <WingBlank><Text>ต้นทาง</Text></WingBlank>
+                <SearchBar
+                    start_lo={this.state.start}
+                    placeholder="เลือกต้นทาง"
+                    onSubmit={start_lo => console.log(start_lo, 'onSubmit')}
+                    onFocus={() => console.log('onFocus')}
+                    onBlur={() => console.log('onBlur')}
+                    onCancel={this.startClear}
+                    cancelText="ยกเลิก"
+                    onChange={this.onChange}
+                />
+                <WhiteSpace/>
+                <WingBlank><Text>ปลายทาง</Text></WingBlank>
+                <SearchBar
+                    end_lo={this.state.end}
+                    placeholder="เลือกปลายทาง"
+                    onSubmit={end_lo => console.log(end_lo, 'onSubmit')}
+                    onFocus={() => console.log('onFocus')}
+                    onBlur={() => console.log('onBlur')}
+                    onCancel={this.endClear}
+                    cancelText="ยกเลิก"
+                    onChange={this.onChange}
+                />
+                <Button type="primary" style={styles.button} onClick={()=>navigate('Activity',{start: start_lo, end: end_lo})}>ยืนยัน</Button>
+                <WhiteSpace/>
+                <Image style={styles.img} source={require('../static/img/img-not-found.jpg')}/>
+            </View>
+        )
     }
-    
 }
 
 export default HomePage;

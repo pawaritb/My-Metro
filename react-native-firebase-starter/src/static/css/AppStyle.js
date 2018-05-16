@@ -6,8 +6,11 @@ const constants = {
 
 var styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
     flex: 1,
+    flexDirection:'column',
+    width: '100%',
+    height: '100%',
   },
   listview: {
     flex: 1,
@@ -37,6 +40,13 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     height: 44,
     flexDirection: 'row'
+  },
+  button: {
+    height:30,
+  },
+  img:{
+    height:"70%",
+    width:"100%",
   },
   navbarTitle: {
     color: '#444',
