@@ -25,6 +25,7 @@ import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage; //
 
 import java.util.Arrays;
 import java.util.List;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -71,5 +72,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
   }
 }

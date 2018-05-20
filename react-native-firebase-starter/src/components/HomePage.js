@@ -1,36 +1,24 @@
-import {AppRegistry, Image, ListView, Reactnative, StyleSheet, Text, View} from 'react-native';
+import {AppRegistry, Image, ListView, Reactnative, Text, View} from 'react-native';
 import {Button, SearchBar, WhiteSpace, WingBlank} from 'antd-mobile';
 import React, {Component} from 'react';
 
+import ActivitiesPage from './ActivitiesPage.js';
 import firebase from 'react-native-firebase';
 
 const styles = require('../static/css/AppStyle.js')
 
 class HomePage extends React.Component{
     
-    state = {
-        start: '',
-        end:'',
-      };
+    constructor(){
+        super();
+        state = {
+            start:'',
+            end:'',
+          };
+    }
 
     static navigationOptions = {
         header: null
-    };
-
-    onChange= (value) => {
-        console.log(value);
-        if(value == this.state.start){
-            this.setState({ this:state.start });
-        }else if(value == this.state.end){
-            this.setState({ this:state.end });
-        }else{
-            
-        }
-    };
-
-    startClear = () => {
-        console.log(start_lo.value)
-        this.setState({start_lo:''});
     };
 
     endClear = () => {
@@ -41,43 +29,33 @@ class HomePage extends React.Component{
     handleClick = () => {
         this.manualFocusInst.focus();
     };
-      
 
     render(){
-        const start_lo = this.state.start;
-        const end_lo = this.state.end;
         const { navigate } = this.props.navigation;
         return(
             <View style={styles.container}>
                 <WingBlank><Text>ต้นทาง</Text></WingBlank>
                 <SearchBar
-                    start_lo={this.state.start}
                     placeholder="เลือกต้นทาง"
-                    onSubmit={start_lo => console.log(start_lo, 'onSubmit')}
-                    onFocus={() => console.log('onFocus')}
-                    onBlur={() => console.log('onBlur')}
-                    onCancel={this.startClear}
+                    onCancel={(start) => this.setState({start:''})}
                     cancelText="ยกเลิก"
-                    onChange={this.onChange}
+                    onChange={(start) => this.setState({start})}
                 />
                 <WhiteSpace/>
                 <WingBlank><Text>ปลายทาง</Text></WingBlank>
                 <SearchBar
-                    end_lo={this.state.end}
                     placeholder="เลือกปลายทาง"
-                    onSubmit={end_lo => console.log(end_lo, 'onSubmit')}
                     onFocus={() => console.log('onFocus')}
                     onBlur={() => console.log('onBlur')}
-                    onCancel={this.endClear}
+                    onCancel={() => console.log('clear')}
                     cancelText="ยกเลิก"
-                    onChange={this.onChange}
+                    onChange={(end) => this.setState({end})}
                 />
-                <Button type="primary" style={styles.button} onClick={()=>navigate('Activity',{start: start_lo, end: end_lo})}>ยืนยัน</Button>
+                <Button type="primary" style={styles.button} onClick={()=>navigate('Activity',{start: this.state.start, end: this.state.end})}>ยืนยัน</Button>
                 <WhiteSpace/>
                 <Image style={styles.img} source={require('../static/img/img-not-found.jpg')}/>
             </View>
         )
     }
 }
-
-export default HomePage;
+    export default HomePage;

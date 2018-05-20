@@ -9,7 +9,7 @@ class ListItem extends Component {
   render() {
     return (
       <View style={styles.listItem}>
-        <Text style={styles.listItemTitle}>{this.props.task.name}</Text>
+        <Text style={styles.listItemTitle}>{this.props.task._key}</Text>
       </View>
     );
   }

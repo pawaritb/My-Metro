@@ -4,9 +4,7 @@ import React, {Component} from 'react';
 import ListItem from '../components/ListItem.js';
 import firebase from 'react-native-firebase';
 
-const styles = require('../static/css/AppStyle.js')
-const StatusBar = require('../components/StatusBar');
-const ActionButton = require('../components/ActionButton');
+const styles = require('../static/css/AppStyle.js');
 
 const firebaseconfig ={
     apiKey:"AIzaSyBQoOKQX-nD9lFzUi5Ye2vCoKzReRYf7Uc",
@@ -26,10 +24,13 @@ class ActivitiesPage extends React.Component{
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         });
+        console.log(dataSource);
         this.state = {
-            dataSource: dataSource
+            dataSource: dataSource,
         };
     }
+
+    
 
     listenForTasks(tasksRef) {
         tasksRef.on('value', (dataSnapshot) => {
@@ -38,13 +39,25 @@ class ActivitiesPage extends React.Component{
                 const temp = child.val()
                 const tempKey = Object.keys(temp)
                 const tempVal = temp[tempKey[0]]
-                console.log(tempVal[0])
-                tasks.push({
-                    _key: tempKey[0], //ได้ key แล้ว
-                    numarray: tempVal
-                });
+
+               /* var ls = require('react-native-local-storage');
+                for(i=0;i<tempVal;i++)
+                    console.log('INLOOOP')
+                    ls.save(tempKey[0], tempVal)
+                        .then(() => {
+                            ls.get(tempKey[0]).then((tempVal) => {console.log("get: "+ ls)});
+                        })
+                */
+
+               //for(i=0;i<tempVal;i++) tempVal มีแค่ 0 ไม่ได้ใช้ (ตอนนี้)
+               console.log('PUSH: ',tempKey[0],' : ',tempVal,'\n')
+                    tasks.push({
+                        _key: tempKey[0], //ได้ key แล้ว
+                        numarray: tempVal,
+                    });
             });
         
+            console.log("tasks: "+JSON.stringify(tasks.numarray));
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(tasks)
             });
@@ -53,12 +66,13 @@ class ActivitiesPage extends React.Component{
     
     render() {
         const {state} = this.props.navigation
+        console.log("Start:"+state.params.start +"   End:"+state.params.end+" Data Source:"+this.state.dataSource.toString);
         {/*state.params.__(ตัวแปรที่ส่ง)__*/}
         return (
         <View style={styles.container}>
             <ToolbarAndroid
                 style={styles.navbar}
-                title="Todo List" />
+                title={'LIST STATION'} />
             <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}

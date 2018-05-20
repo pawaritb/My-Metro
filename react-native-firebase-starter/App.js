@@ -1,30 +1,29 @@
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { applyMiddleware, createStore } from 'redux';
-
-import AppReducer from './src/reducers';
+import ActivitiesPage from './src/components/ActivitiesPage';
 import { AppRegistry } from 'react-native';
-import AppWithNavigationState from './src/navigators/AppNavigator';
-import { Provider } from 'react-redux';
+import HomePage from './src/components/HomePage';
 import React from 'react';
-import { compose } from 'redux';
-import firebase from 'react-native-firebase';
-import { middleware } from './src/utils/redux';
-import thunk from 'redux-thunk';
+import {StackNavigator} from 'react-navigation'
 
-const store = createStore(AppReducer, compose(applyMiddleware(middleware, thunk)))
+const RootStack = StackNavigator(
+  {
+    Home: {
+      screen: HomePage,
+    },
+    Activity: {
+      screen: ActivitiesPage,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
 
 class MymetroApp extends React.Component {
-
   render() {
-    return (
-      <Provider store={store}>
-        <AppWithNavigationState />
-      </Provider>
-    );
+    return <RootStack />;
   }
 }
 
 AppRegistry.registerComponent('Mymetro', () => MymetroApp);
 
 export default MymetroApp;
-
