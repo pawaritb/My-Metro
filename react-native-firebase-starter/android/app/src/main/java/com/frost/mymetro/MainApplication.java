@@ -1,7 +1,6 @@
 package com.frost.mymetro;
 
 import android.app.Application;
-
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;

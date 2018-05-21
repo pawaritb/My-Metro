@@ -1,4 +1,4 @@
-import {AppRegistry, ListView, Reactnative, StyleSheet, Text, ToolbarAndroid, View} from 'react-native';
+import {AppRegistry, Image, ListView, Reactnative, Text, ToolbarAndroid, View} from 'react-native';
 import React, {Component} from 'react';
 
 import ListItem from '../components/ListItem.js';
@@ -14,70 +14,164 @@ const firebaseconfig ={
 }
 const firebaseApp = firebase.initializeApp(firebaseconfig);
 
+const tasks = [];
+const count =[];
 class ActivitiesPage extends React.Component{
 
     constructor(props) {
         super(props);
-        this.getref = firebaseApp.database().ref();
-        this.tasksRef = this.getref.child('users').child('-LBb_zaWeURLFjeh2j-z').child('map');
-        console.log(this.tasksRef);
+        this.getref = firebaseApp.database();
+        this.tasksRef = this.getref.ref('users/lBPn0ycw6ydQhOPnIFUoQskYJJ53/connects/');
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         });
-        console.log(dataSource);
         this.state = {
             dataSource: dataSource,
         };
     }
-
     
-
+    static navigationOptions = {
+        header: null
+    };
+    
     listenForTasks(tasksRef) {
+
+        const {state} = this.props.navigation
+        var st = state.params.start;
+        var ed = state.params.end;
+
         tasksRef.on('value', (dataSnapshot) => {
-            var tasks = [];
             dataSnapshot.forEach((child) => {
                 const temp = child.val()
                 const tempKey = Object.keys(temp)
                 const tempVal = temp[tempKey[0]]
-
-               /* var ls = require('react-native-local-storage');
-                for(i=0;i<tempVal;i++)
-                    console.log('INLOOOP')
-                    ls.save(tempKey[0], tempVal)
-                        .then(() => {
-                            ls.get(tempKey[0]).then((tempVal) => {console.log("get: "+ ls)});
+                count.push({
+                    stationName: tempVal.stationName,
+                    stationLine: tempVal.stationLine,
+                })
+                const started = temp[tempKey[0]]
+                const isInterchange = temp[tempKey[1]]
+                const ended = temp[tempKey[2]]
+                
+                for(i=0;i<count.length;i++){    
+                    if(st==state.params.start){
+                        tasks.push({
+                            img: require('../static/img/circle.png'),
+                            name: st, 
                         })
-                */
-
-               //for(i=0;i<tempVal;i++) tempVal มีแค่ 0 ไม่ได้ใช้ (ตอนนี้)
-               console.log('PUSH: ',tempKey[0],' : ',tempVal,'\n')
+                        st = JSON.stringify(ended.stationName);
+                        console.log('Start Push: '+st+' current NOde: '+JSON.stringify(started.stationName))
+                    }
+                    if(started.stationName != undefined && ed!=started.stationName){
+                        var line1 = JSON.stringify(ended.stationLine);
+                        var next = JSON.stringify(ended.stationName);
+                        console.log(st+' : '+next)
+                        if(st==next){
+                            var line2 = JSON.stringify(started.stationLine);
+                            console.log('Line1: '+line1+' : Line2:'+line2)
+                            if(line1==line2){
+                                console.log('Push: '+st)
+                                tasks.push({
+                                    img: require('../static/img/line.png'),
+                                    name: st,
+                                })
+                                st = next;
+                            }
+                        }
+                    }
+                    if(ed==started.stationName){
+                        console.log('End Push: '+ed)
+                        tasks.push({
+                            img: require('../static/img/circle.png'),
+                            name: ed, 
+                        })
+                        break;
+                    }
+                }
+                /* var i=0;
+                tempVal.forEach(function(){
                     tasks.push({
-                        _key: tempKey[0], //ได้ key แล้ว
-                        numarray: tempVal,
-                    });
-            });
-        
-            console.log("tasks: "+JSON.stringify(tasks.numarray));
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(tasks)
+                            _key: tempKey[0], //ได้ key แล้ว
+                            numarray: tempVal[i],
+                        });
+                        i=i+1;
+                });//NORMAL PUSH DATA TO LISTVIEW
+                */
+               this.setState({
+                   dataSource: this.state.dataSource.cloneWithRows(tasks)
+                });
             });
         });
+    }
+
+    search(){
+        /*const {state} = this.props.navigation
+        var st = state.params.start;
+        var ed = state.params.end;
+        console.log(this.started)
+        console.log("length Array:"+count.length)
+        
+        for(i=0;i<count.length;i++){
+            console.log("IN LOOP")
+            if(st.match(state.params.start)){
+                console.log('Start Push: '+st)
+                tasks.push({
+                    img: require('../static/img/circle.png'),
+                    name: st, 
+                })
+            }
+            if(st.match(start.stationName) && start.stationName != undefined){
+                var line1 = end.stationLine;
+                var next = end.stationName;
+                if(ed.match(start.stationName)){
+                    var line2 = start.stationLine;
+                    if(line1.match(Line2)){
+                        st = next;
+                        console.log('Push: '+st)
+                        tasks.push({
+                            img: require('../static/img/line.png'),
+                            name: st,
+                        })
+                    }
+                }
+            }else if(i==start.length-1){
+                i=0;
+            }
+            if(st.match(state.params.end)){
+                console.log('End Push: '+st)
+                tasks.push({
+                    img: require('../static/img/circle.png'),
+                    name: st, 
+                })
+                dataSource: this.state.dataSource.cloneWithRows(tasks)
+                break;
+            }
+        }*/
     }
     
     render() {
         const {state} = this.props.navigation
-        console.log("Start:"+state.params.start +"   End:"+state.params.end+" Data Source:"+this.state.dataSource.toString);
+        //console.log("Start:"+state.params.start +"   End:"+state.params.end+" Data Source:"+this.state.dataSource.toString);
         {/*state.params.__(ตัวแปรที่ส่ง)__*/}
         return (
         <View style={styles.container}>
-            <ToolbarAndroid
-                style={styles.navbar}
-                title={'LIST STATION'} />
+            <View style={styles.head2}>
+                <View style={styles.colum}>
+                    <View style={styles.row}>
+                        <Text style={styles.infotext}>{state.params.start}</Text>
+                        <Image style={styles.arrow} resizeMode='contain' source={require('../static/img/arrow.png')}/>
+                        <Text style={styles.infotext}>{state.params.end}</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.body}>
             <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
-                renderRow={this._renderItem.bind(this)}
-                style={styles.listView}/>
+                renderRow={this._renderItem.bind(this.tasks)}
+                style={styles.listView}
+                scrollRenderAheadDistance={500}/>
+            </View>
         </View>
         );
     }
@@ -85,14 +179,16 @@ class ActivitiesPage extends React.Component{
     componentDidMount() {
         // start listening for firebase updates
         this.listenForTasks(this.tasksRef);
+        this.search();
     }
 
     _renderItem(task) {
         return (
-          <ListItem task={task} />
+            <View style={styles.liContainer}>
+                <Image source={task.img} style={styles.circle}/>
+                <Text style={styles.listItem}>{task.name}</Text>
+            </View>
         );
     }
     
-}  
-
-export default ActivitiesPage;
+}export default ActivitiesPage;      

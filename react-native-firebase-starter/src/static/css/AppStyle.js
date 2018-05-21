@@ -5,48 +5,59 @@ const constants = {
 };
 
 var styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    flex: 1,
+  container:{
+    width:'100%',
+    height:'100%',
+  },
+  head:{
+    width:'100%',
+    height:125,
+    backgroundColor:'#969696',
+    padding:5,
+  },
+  head2:{
+    width:'100%',
+    height:125,
+    backgroundColor:'#969696',
+    padding:5,
+    paddingTop:20,
+  },
+  body: {
+    backgroundColor: '#efefef',
     flexDirection:'column',
     width: '100%',
-    height: '100%',
+    height: '80%',
+    padding:10,
   },
   listview: {
     flex: 1,
   },
   listItem: {
-    backgroundColor: '#fff',
-    borderBottomColor: '#eee',
-    borderColor: 'transparent',
-    borderWidth: 1,
-    paddingLeft: 16,
-    paddingTop: 14,
-    paddingBottom: 16,
+    borderTopColor: '#888888',
+    borderBottomColor: '#888888',
+    flexDirection:'row',
+    alignItems:'center',
+    padding:20,
+    width:'100%',
+    height:'100%',
   },
   liContainer: {
-    flex: 2,
+    flex: 1,
+    flexDirection:'row',
+    paddingLeft:20,
   },
   ListItemTitle: {
     color: '#333',
     fontSize: 16,
   },
-  navbar: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderBottomColor: '#eee',
-    borderColor: 'transparent',
-    borderWidth: 1,
-    justifyContent: 'center',
-    height: 44,
-    flexDirection: 'row'
-  },
   button: {
     height:30,
+    marginTop:10,
   },
   img:{
-    height:"70%",
+    height:"50%",
     width:"100%",
+    marginTop:20,
   },
   navbarTitle: {
     color: '#444',
@@ -59,6 +70,10 @@ var styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center',
+  },
+  circle:{
+    width:60,
+    height:60,
   },
   actionText: {
     color: '#fff',
@@ -73,6 +88,38 @@ var styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 16,
   },
+  title:{
+    fontSize:18,
+    fontWeight:'bold',
+    margin:10,
+    textAlign:'center',
+    textAlignVertical:'center',
+  },
+  imglogo:{
+    width:'100%',
+    height:'100%',
+  },
+  row:{
+    flexDirection:'row',
+    flex:1,
+  },
+  colum:{
+    flexDirection:'column',
+    flex:1,
+    alignItems:'center',
+  },
+  arrow:{
+    width:50,
+    height:100,
+  },
+  infotext:{
+    fontSize:18,
+    fontWeight:'bold',
+    margin:10,
+    textAlign:'center',
+    textAlignVertical:'center',
+    color:'white',
+  }
 })
 
 module.exports = styles
