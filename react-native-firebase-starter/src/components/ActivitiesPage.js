@@ -103,51 +103,6 @@ class ActivitiesPage extends React.Component{
             });
         });
     }
-
-    search(){
-        /*const {state} = this.props.navigation
-        var st = state.params.start;
-        var ed = state.params.end;
-        console.log(this.started)
-        console.log("length Array:"+count.length)
-        
-        for(i=0;i<count.length;i++){
-            console.log("IN LOOP")
-            if(st.match(state.params.start)){
-                console.log('Start Push: '+st)
-                tasks.push({
-                    img: require('../static/img/circle.png'),
-                    name: st, 
-                })
-            }
-            if(st.match(start.stationName) && start.stationName != undefined){
-                var line1 = end.stationLine;
-                var next = end.stationName;
-                if(ed.match(start.stationName)){
-                    var line2 = start.stationLine;
-                    if(line1.match(Line2)){
-                        st = next;
-                        console.log('Push: '+st)
-                        tasks.push({
-                            img: require('../static/img/line.png'),
-                            name: st,
-                        })
-                    }
-                }
-            }else if(i==start.length-1){
-                i=0;
-            }
-            if(st.match(state.params.end)){
-                console.log('End Push: '+st)
-                tasks.push({
-                    img: require('../static/img/circle.png'),
-                    name: st, 
-                })
-                dataSource: this.state.dataSource.cloneWithRows(tasks)
-                break;
-            }
-        }*/
-    }
     
     render() {
         const {state} = this.props.navigation
@@ -179,7 +134,7 @@ class ActivitiesPage extends React.Component{
     componentDidMount() {
         // start listening for firebase updates
         this.listenForTasks(this.tasksRef);
-        this.search();
+
     }
 
     _renderItem(task) {

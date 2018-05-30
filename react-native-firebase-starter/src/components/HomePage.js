@@ -26,7 +26,9 @@ class HomePage extends React.Component{
     }
 
     componentDidMount(){
-        BackHandler.exitApp;
+        clear = () => {
+            this.setState({ value: '' });
+          };
     }
 
     componentWillUnmount(){
@@ -50,14 +52,14 @@ class HomePage extends React.Component{
                 <Text>ต้นทาง</Text>
                 <SearchBar
                     placeholder="เลือกต้นทาง"
-                    onCancel={(start) => this.setState(state => ({...state, start:start || ""}))}
+                    onCancel={(start) => this.setState({start:''})}
                     cancelText="ยกเลิก"
                     onChange={(start) => this.setState({start})}
                 />
                 <Text>ปลายทาง</Text>
                 <SearchBar
                     placeholder="เลือกปลายทาง"
-                    onCancel={(end) => this.setState(state => ({...state, end:end || ""}))}
+                    onCancel={(end) => this.setState({end:''})}
                     cancelText="ยกเลิก"
                     onChange={(end) => this.setState({end})}
                 />
