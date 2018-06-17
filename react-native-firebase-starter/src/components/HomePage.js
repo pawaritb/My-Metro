@@ -6,6 +6,11 @@ import ActivitiesPage from './ActivitiesPage.js';
 import firebase from 'react-native-firebase';
 
 const styles = require('../static/css/AppStyle.js')
+const firebaseApp = firebase.app();
+const getref = firebaseApp.database();
+const tasksRef = getref.ref('users/lBPn0ycw6ydQhOPnIFUoQskYJJ53/connects/');
+
+var connects = [];
 
 class HomePage extends React.Component{
     
@@ -14,7 +19,26 @@ class HomePage extends React.Component{
         state = {
             start:'',
             end:'',
+            connects:[],
           };
+        this.loaddata();
+    }
+
+    loaddata(){
+        tasksRef.on('value', (dataSnapshot) => {
+            dataSnapshot.forEach((child) => {
+                const temp = child.val();
+                const key = Object.keys(temp);
+                connects.push({
+                    startStation: temp[key[0]].stationName,
+                    startLine: temp[key[0]].stationLine,
+                    interchange: temp.isInterchange,
+                    endStation: temp[key[2]].stationName,
+                    endLine: temp[key[2]].stationLine
+                });
+            });
+        });
+        console.log('Suscess');
     }
 
     static navigationOptions = {
@@ -63,7 +87,7 @@ class HomePage extends React.Component{
                     cancelText="ยกเลิก"
                     onChange={(end) => this.setState({end})}
                 />
-                <Button type="primary" style={styles.button} onClick={()=>navigate('Activity',{start: this.state.start, end: this.state.end})}>ยืนยัน</Button>
+                <Button type="primary" style={styles.button} onClick={()=>navigate('Activity',{start: this.state.start, end: this.state.end, connects:connects})}>ยืนยัน</Button>
                 <Image style={styles.img} source={{uri:'https://firebasestorage.googleapis.com/v0/b/maptool-f99d8.appspot.com/o/aloha%2Fmap?alt=media&token=0e32d32a-8277-4de5-b221-ee66de0a0551'}}/>
             </View>
         </View>
